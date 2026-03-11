@@ -21,7 +21,9 @@ services:
       - cryptopeak-backend
 
   cryptopeak-backend:
-    image: cryptopeak-backend:latest
+    build:
+      context: ../backEnd
+      dockerfile: Dockerfile
     container_name: cryptopeak-backend
     ports:
       - "8080:8080"
