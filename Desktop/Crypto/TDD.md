@@ -242,7 +242,7 @@ services:
       - cryptopeak-backend
       
   cryptopeak-backend:
-    build: ./intrenProject
+    build: ./backEnd
     ports:
       - "8080:8080"
     environment:

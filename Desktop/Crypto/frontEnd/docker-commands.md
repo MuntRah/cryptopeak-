@@ -114,9 +114,9 @@ docker run -d -p 3000:80 \
 
 To run both frontend and backend together:
 
-1. Build backend image first (from intrenProject directory):
+1. Build backend image first (from backEnd directory):
    ```bash
-   cd ../intrenProject
+   cd ../backEnd
    docker build -t cryptopeak-backend .
    ```
 

@@ -63,7 +63,7 @@ A full-stack cryptocurrency trading platform built with React and Spring Boot, f
 
 1. **Start Backend**
    ```bash
-   cd intrenProject
+   cd backEnd
    ./mvnw spring-boot:run
    ```
 
@@ -86,7 +86,7 @@ cryptopeak/
 │   │   └── services/        # API service functions
 │   ├── Dockerfile           # Frontend container config
 │   └── docker-compose.yml   # Full-stack orchestration
-├── intrenProject/           # Spring Boot backend
+├── backEnd/                 # Spring Boot backend
 │   ├── src/main/java/       # Java source code
 │   ├── src/main/resources/  # Configuration files
 │   └── Dockerfile           # Backend container config
@@ -151,7 +151,7 @@ docker-compose build cryptopeak-backend
 
 ### Backend Tests
 ```bash
-cd intrenProject
+cd backEnd
 ./mvnw test
 ```
 
@@ -189,7 +189,7 @@ npm run test
 - **[PRD.md](PRD.md)** - Product Requirements Document
 - **[TDD.md](TDD.md)** - Technical Design Document
 - **[Frontend Test Cases](frontEnd/FRONTEND_TEST_CASES.md)** - Frontend testing guide
-- **[Backend Test Cases](intrenProject/BACKEND_TEST_CASES.md)** - Backend testing guide
+- **[Backend Test Cases](backEnd/BACKEND_TEST_CASES.md)** - Backend testing guide
 
 ## 📝 License
 
