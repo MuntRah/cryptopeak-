@@ -1,19 +1,20 @@
-# Docker Commands for CryptoPeak
+# Docker Commands for CryptoPeaks
 
 ## Build and Run Commands
 
 ### Build the Docker images
 ```bash
-# Frontend image
-docker build -t cryptopeak-frontend:v1.0 .
+# From root directory - builds both frontend and backend
+docker-compose build
 
-# Backend image (from backEnd directory)
-cd ../backEnd
-docker build -t cryptopeak-backend:v1.0 .
+# Or build individually
+docker build -t cryptopeak-frontend ./frontEnd
+docker build -t cryptopeak-backend ./backEnd
 ```
 
 ### Using Docker Compose (Recommended)
 ```bash
+# From root directory
 # Build and start all services
 docker-compose up -d --build
 
@@ -24,24 +25,36 @@ docker-compose up -d
 docker-compose down
 
 # View logs
-docker-compose logs -f cryptopeak        # Frontend logs
-docker-compose logs -f cryptopeak-api    # Backend logs
+docker-compose logs -f CryptoPeaks        # Frontend logs
+docker-compose logs -f cryptopeak-backend # Backend logs
 
 # Rebuild specific service
 docker-compose build cryptopeak-frontend
+docker-compose build cryptopeak-backend
 ```
 
 ## Development Commands
 
 ### Build for development with live reload
 ```bash
-# Run development server locally (not in Docker)
+# Frontend development (from frontEnd directory)
+cd frontEnd
 npm run dev
+
+# Backend development (from backEnd directory)
+cd backEnd
+./mvnw spring-boot:run
 ```
 
 ### Build production version
 ```bash
+# Frontend
+cd frontEnd
 npm run build
+
+# Backend
+cd backEnd
+./mvnw clean package
 ```
 
 ## Container Management
@@ -53,24 +66,24 @@ docker ps
 
 ### Stop containers
 ```bash
-docker stop cryptopeak cryptopeak-api
+docker stop CryptoPeaks cryptopeak-backend
 ```
 
 ### Remove containers
 ```bash
-docker rm cryptopeak cryptopeak-api
+docker rm CryptoPeaks cryptopeak-backend
 ```
 
 ### View container logs
 ```bash
-docker logs cryptopeak        # Frontend logs
-docker logs cryptopeak-api    # Backend logs
+docker logs CryptoPeaks        # Frontend logs
+docker logs cryptopeak-backend # Backend logs
 ```
 
 ### Execute commands in running container
 ```bash
-docker exec -it cryptopeak sh        # Frontend container
-docker exec -it cryptopeak-api sh    # Backend container
+docker exec -it CryptoPeaks sh        # Frontend container
+docker exec -it cryptopeak-backend sh # Backend container
 ```
 
 ## Image Management
@@ -82,8 +95,8 @@ docker images
 
 ### Remove images
 ```bash
-docker rmi cryptopeak-frontend:v1.0
-docker rmi cryptopeak-backend:v1.0
+docker rmi cryptopeak-frontend
+docker rmi cryptopeak-backend
 ```
 
 ### Clean up unused images and containers
@@ -95,8 +108,8 @@ docker system prune -a
 
 ### Check container health
 ```bash
-docker inspect --format='{{.State.Health.Status}}' cryptopeak
-docker inspect --format='{{.State.Health.Status}}' cryptopeak-api
+docker inspect --format='{{.State.Health.Status}}' CryptoPeaks
+docker inspect --format='{{.State.Health.Status}}' cryptopeak-backend
 ```
 
 ### Test health endpoints
@@ -112,35 +125,49 @@ Set environment variables in docker-compose.yml or pass them during run:
 ```bash
 docker run -d -p 4567:80 \
   -e NODE_ENV=production \
-  --name cryptopeak \
-  cryptopeak-frontend:v1.0
+  --name CryptoPeaks \
+  cryptopeak-frontend
 ```
 
 ## Full Stack Deployment
 
-To run both frontend and backend together:
+### Quick Start (from root directory)
+```bash
+# Build and run everything
+docker-compose up -d --build
 
-1. Build both images:
-   ```bash
-   # Frontend
-   docker build -t cryptopeak-frontend:v1.0 .
-   
-   # Backend (from backEnd directory)
-   cd ../backEnd
-   docker build -t cryptopeak-backend:v1.0 .
-   cd ../frontEnd
-   ```
+# Or if images already exist
+docker-compose up -d
+```
 
-2. Run full stack:
-   ```bash
-   docker-compose up -d
-   ```
+### Manual Build and Run
+```bash
+# Build both images
+docker build -t cryptopeak-frontend ./frontEnd
+docker build -t cryptopeak-backend ./backEnd
+
+# Run with docker-compose
+docker-compose up -d
+```
 
 Access the application:
-- **CryptoPeak App**: http://localhost:4567
+- **CryptoPeaks App**: http://localhost:4567
 - **API Backend**: http://localhost:9876
 
 ## Container Names
-- **cryptopeak** - Main application (frontend)
-- **cryptopeak-api** - Backend API server
-- **Images**: cryptopeak-frontend:v1.0, cryptopeak-backend:v1.0
+- **CryptoPeaks** - Main application (frontend)
+- **cryptopeak-backend** - Backend API server
+- **Images**: cryptopeak-frontend, cryptopeak-backend
+
+## Project Structure
+```
+CryptoPeak/
+├── docker-compose.yml    # Main orchestration file
+├── frontEnd/
+│   ├── Dockerfile
+│   └── ...
+├── backEnd/
+│   ├── Dockerfile
+│   └── ...
+└── frontEnd/docker-commands.md  # This file
+```

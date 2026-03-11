@@ -51,13 +51,12 @@ A full-stack cryptocurrency trading platform built with React and Spring Boot, f
 
 2. **Start the application**
    ```bash
-   cd frontEnd
    docker-compose up -d --build
    ```
 
 3. **Access the application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8080
+   - Frontend: http://localhost:4567
+   - Backend API: http://localhost:9876
 
 ### Local Development
 
@@ -197,7 +196,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👥 Team
 
 - **Array Innovation** - Development Team
-- **MuntRah** - Lead Developer
+- **Muntadher** - Software Developer
+- **Mueen** - Software Developer
 
 ## 🆘 Support
 

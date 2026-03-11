@@ -1,5 +1,6 @@
 services:
   cryptopeak-frontend:
+    build: ./frontEnd
     image: cryptopeak-frontend
     container_name: CryptoPeaks
     ports:
@@ -19,6 +20,7 @@ services:
       - cryptopeak-backend
 
   cryptopeak-backend:
+    build: ./backEnd
     image: cryptopeak-backend
     container_name: cryptopeak-backend
     ports:
