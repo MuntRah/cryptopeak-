@@ -258,19 +258,13 @@ Responsive design means it works on phones, tablets, and desktops.
 
 ## Future Vision
 
-### Short Term (6 months)
+### Short Term 
 We want CryptoPeak to be the go-to platform for crypto beginners in our region. Mobile app launch will expand our reach significantly.
 
-### Medium Term (1 year)
+### Medium Term 
 Expand to serve intermediate and advanced traders with professional-grade tools while keeping the beginner-friendly experience.
 
-### Long Term (2+ years)
+### Long Term 
 Become a comprehensive crypto financial platform - trading, investing, DeFi, and education all in one place.
 
----
-
-**This document represents our current understanding and will evolve as we learn from users and market feedback.**
-
-**Questions or feedback?** Contact the Array Innovation team.
-
-**Last updated:** March 2026
+----

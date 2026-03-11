@@ -1,300 +1,221 @@
-# Technical Design Document (TDD)
-## CryptoPeak - Cryptocurrency Trading Platform
+# Technical Design Document
+## CryptoPeak - How We Built It
 
-### 1. System Overview
 **Project:** CryptoPeak Trading Platform  
-**Architecture:** Full-Stack Web Application  
-**Deployment:** Docker Containerization  
+**Team:** Array Innovation  
 **Date:** March 2026  
+**Version:** 1.0  
 
-### 2. Architecture Design
+---
 
-#### 2.1 High-Level Architecture
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │    Backend      │    │  External APIs  │
-│   (React)       │◄──►│  (Spring Boot)  │◄──►│   (Binance)     │
-│   Port: 3000    │    │   Port: 8080    │    │   (Stripe)      │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │
-         │                       │
-         ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐
-│     Nginx       │    │    SQLite       │
-│  (Web Server)   │    │   (Database)    │
-└─────────────────┘    └─────────────────┘
-```
+## The Big Picture
 
-#### 2.2 Technology Stack
+We built CryptoPeak as a modern web application that feels fast and reliable. Think of it like online banking, but for cryptocurrency trading. Everything runs in Docker containers, which means it works the same way whether we're testing on our laptops or running it in production.
 
-**Frontend:**
-- **Framework:** React 18.2.0
-- **Build Tool:** Vite 5.0.8
-- **Styling:** Tailwind CSS 3.3.6
-- **State Management:** React Query (TanStack)
-- **Routing:** React Router DOM 6.20.0
-- **HTTP Client:** Axios 1.6.2
-- **Charts:** Recharts 2.10.3
+The whole system is pretty straightforward - a React frontend talks to a Spring Boot backend, which connects to external APIs for real crypto prices and payment processing. We chose technologies that our team knows well and that have strong community support.
 
-**Backend:**
-- **Framework:** Spring Boot 3.2.5
-- **Language:** Java 17
-- **Database:** SQLite with JPA/Hibernate
-- **Security:** Spring Security with JWT
-- **Build Tool:** Maven 3.9
-- **Migration:** Flyway
+---
 
-**Infrastructure:**
-- **Containerization:** Docker & Docker Compose
-- **Web Server:** Nginx (Production)
-- **Reverse Proxy:** Nginx configuration
-- **Health Checks:** Docker health monitoring
+## How Everything Connects
 
-### 3. Database Design
+### The Main Components
+**Frontend (React)** - What users see and interact with
+- Runs on port 4567 in our Docker setup
+- Built with modern React and styled with Tailwind CSS
+- Uses Vite for super-fast development and building
 
-#### 3.1 Entity Relationship Diagram
-```
-┌─────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│    User     │    │ CryptoHolding   │    │CryptoTransaction│
-├─────────────┤    ├─────────────────┤    ├─────────────────┤
-│ id (PK)     │◄──►│ id (PK)         │    │ id (PK)         │
-│ email       │    │ user_id (FK)    │    │ user_id (FK)    │
-│ password    │    │ crypto_id       │    │ crypto_id       │
-│ balance     │    │ crypto_symbol   │    │ type            │
-│ created_at  │    │ quantity        │    │ quantity        │
-└─────────────┘    │ avg_buy_price   │    │ price_per_unit  │
-                   └─────────────────┘    │ total_amount    │
-                                          │ created_at      │
-┌─────────────┐    ┌─────────────────┐    └─────────────────┘
-│ LimitOrder  │    │    Deposit      │
-├─────────────┤    ├─────────────────┤
-│ id (PK)     │    │ id (PK)         │
-│ user_id(FK) │    │ user_id (FK)    │
-│ crypto_id   │    │ amount          │
-│ order_type  │    │ payment_intent  │
-│ quantity    │    │ status          │
-│ limit_price │    │ created_at      │
-│ status      │    └─────────────────┘
-│ created_at  │
-└─────────────┘
-```
+**Backend (Spring Boot)** - The business logic and data handling
+- Runs on port 9876 in our Docker setup
+- Written in Java 17 with Spring Boot 3.2.5
+- Handles all the trading logic and user management
 
-#### 3.2 Key Tables
+**Database (SQLite)** - Where we store everything
+- Simple file-based database that's perfect for our needs
+- Automatic migrations with Flyway
+- Stores users, trades, portfolios, and limit orders
 
-**Users Table:**
-- Stores user authentication and profile data
-- Tracks account balance for trading
-- Encrypted password storage
+**External Services** - The outside world
+- Binance API for real-time crypto prices
+- Stripe for secure payment processing
 
-**CryptoHolding Table:**
-- Tracks user's cryptocurrency portfolio
-- Calculates average buy price
-- Real-time quantity management
+### Why These Choices Made Sense
+We picked React because it's what most developers know, and the ecosystem is huge. Spring Boot gives us enterprise-level features without the complexity. SQLite keeps things simple - no database server to manage, and it's surprisingly powerful for our use case.
 
-**CryptoTransaction Table:**
-- Records all buy/sell transactions
-- Audit trail for trading activity
-- Links to user and cryptocurrency data
+Docker containers mean we can develop locally and deploy anywhere without "it works on my machine" problems.
 
-**LimitOrder Table:**
-- Manages pending limit orders
-- Automatic execution logic
-- Order status tracking
+---
 
-### 4. API Design
+## The Database Story
 
-#### 4.1 Authentication Endpoints
-```
-POST /api/users/register     - User registration
-POST /api/users/login        - User authentication
-POST /api/users/logout       - User logout
-PUT  /api/users/profile      - Update profile
-POST /api/users/reset-password - Password reset
-```
+We keep things simple with five main tables that handle everything:
 
-#### 4.2 Trading Endpoints
-```
-GET  /api/crypto/top         - Get top cryptocurrencies
-GET  /api/crypto/{id}        - Get specific crypto data
-POST /api/trading/buy        - Execute buy order
-POST /api/trading/sell       - Execute sell order
-GET  /api/trading/holdings   - Get user portfolio
-GET  /api/trading/transactions - Get transaction history
-```
+**Users** - Basic account info, encrypted passwords, and account balances
+**CryptoHolding** - What crypto each user owns and their average buy prices
+**CryptoTransaction** - Every buy and sell trade (our audit trail)
+**LimitOrder** - Pending orders that execute when prices hit target levels
+**Deposit** - Payment records and Stripe integration data
 
-#### 4.3 Limit Order Endpoints
-```
-POST /api/limit-orders       - Create limit order
-GET  /api/limit-orders       - Get user's limit orders
-PUT  /api/limit-orders/{id}  - Update limit order
-DELETE /api/limit-orders/{id} - Cancel limit order
-```
+The relationships are straightforward - users have holdings, transactions, and orders. Everything links back to the user account, making queries fast and data consistent.
 
-#### 4.4 Payment Endpoints
-```
-POST /api/payments/create-intent - Create payment intent
-POST /api/payments/confirm       - Confirm payment
-GET  /api/balance               - Get user balance
-```
+---
 
-### 5. Security Implementation
+## API Design Philosophy
 
-#### 5.1 Authentication Flow
-1. User submits credentials
-2. Backend validates against database
-3. JWT token generated with user claims
-4. Token returned to frontend
-5. Token included in subsequent requests
-6. Backend validates token on each request
+We designed our APIs to be predictable and RESTful. If you've used any modern web API, ours will feel familiar:
 
-#### 5.2 Security Measures
-- **Password Hashing:** BCrypt with salt
-- **JWT Tokens:** 24-hour expiration
-- **CORS Configuration:** Restricted origins
-- **Input Validation:** Server-side validation
-- **SQL Injection Prevention:** JPA/Hibernate ORM
-- **XSS Protection:** Content Security Policy headers
+**Authentication Routes** - Register, login, logout, password reset
+**Trading Routes** - Buy crypto, sell crypto, view portfolio, transaction history
+**Limit Order Routes** - Create, view, update, and cancel pending orders
+**Payment Routes** - Add money to accounts via Stripe integration
+**Market Data Routes** - Get current prices and crypto information
 
-### 6. External Integrations
+Every endpoint returns consistent JSON responses, and we use standard HTTP status codes. Error messages are clear and helpful for debugging.
 
-#### 6.1 Binance API Integration
-```java
-// Real-time price fetching
-GET https://api.binance.com/api/v3/ticker/24hr
-GET https://api.binance.com/api/v3/klines
+---
 
-// Implementation in CryptoService
-@Service
-public class CryptoService {
-    private final String BINANCE_API_URL = "https://api.binance.com/api/v3";
-    
-    public List<CryptoCurrency> getTopCryptocurrencies(int limit) {
-        // Fetch and process Binance data
-    }
-}
-```
+## Security That Actually Works
 
-#### 6.2 Stripe Payment Integration
-```java
-// Payment processing
-@Service
-public class PaymentService {
-    public PaymentIntentResponse createPaymentIntent(Double amount) {
-        // Create Stripe payment intent
-    }
-}
-```
+Security isn't an afterthought - it's built into every layer:
 
-### 7. Frontend Architecture
+**Authentication** - JWT tokens that expire in 24 hours
+**Password Storage** - BCrypt hashing with proper salting
+**API Protection** - CORS configured to only allow our frontend
+**Input Validation** - Everything gets validated on the server side
+**Database Security** - JPA/Hibernate prevents SQL injection attacks
 
-#### 7.1 Component Structure
-```
-src/
-├── components/
-│   ├── Layout.jsx           - Main layout wrapper
-│   ├── PriceChart.jsx       - Price visualization
-│   └── PortfolioChart.jsx   - Portfolio charts
-├── pages/
-│   ├── Dashboard.jsx        - Main dashboard
-│   ├── Trading.jsx          - Trading interface
-│   ├── Portfolio.jsx        - Portfolio management
-│   └── Profile.jsx          - User profile
-├── context/
-│   ├── AuthContext.jsx      - Authentication state
-│   ├── CurrencyContext.jsx  - Currency conversion
-│   └── ThemeContext.jsx     - Dark/light theme
-└── services/
-    ├── api.js               - HTTP client setup
-    ├── cryptoService.js     - Crypto API calls
-    └── paymentService.js    - Payment API calls
-```
+We also use HTTPS everywhere and follow security best practices. The JWT approach means users stay logged in across browser sessions but tokens expire regularly for security.
 
-#### 7.2 State Management
-- **React Query:** Server state management
-- **Context API:** Global application state
-- **Local State:** Component-specific state
+---
 
-### 8. Deployment Architecture
+## Frontend Architecture
 
-#### 8.1 Docker Configuration
-```dockerfile
-# Frontend Dockerfile
-FROM node:18-alpine AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
+The React frontend is organized around user workflows:
 
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
-```
+**Pages** - Dashboard, Trading, Portfolio, Profile (the main user destinations)
+**Components** - Reusable pieces like charts, forms, and layout elements
+**Context** - Global state for authentication, currency preferences, and themes
+**Services** - API communication and data fetching logic
 
-#### 8.2 Docker Compose Setup
-```yaml
-services:
-  cryptopeak-frontend:
-    build: ./frontEnd
-    ports:
-      - "3000:80"
-    depends_on:
-      - cryptopeak-backend
-      
-  cryptopeak-backend:
-    build: ./backEnd
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-```
+We use React Query for server state management, which gives us automatic caching, background updates, and error handling. The Context API handles global state like user authentication and currency preferences.
 
-### 9. Performance Considerations
+---
 
-#### 9.1 Frontend Optimization
-- **Code Splitting:** Route-based lazy loading
-- **Caching:** React Query caching strategy
-- **Bundle Optimization:** Vite build optimization
-- **Image Optimization:** Lazy loading and compression
+## External Integrations
 
-#### 9.2 Backend Optimization
-- **Database Indexing:** Primary and foreign key indexes
-- **Connection Pooling:** HikariCP configuration
-- **Caching:** In-memory caching for frequent queries
-- **API Rate Limiting:** Prevent abuse
+**Binance API** - We fetch real-time prices every 30 seconds
+- Uses their public API endpoints (no API key required)
+- Handles rate limiting and error responses gracefully
+- Caches data to reduce API calls and improve performance
 
-### 10. Monitoring & Logging
+**Stripe Payments** - Secure payment processing
+- Creates payment intents for deposits
+- Handles webhooks for payment confirmations
+- Never stores sensitive payment data on our servers
 
-#### 10.1 Health Checks
-- **Frontend:** Nginx health endpoint
-- **Backend:** Spring Boot Actuator
-- **Database:** Connection health monitoring
+Both integrations have fallback handling - if Binance is down, we show cached prices with a warning. If Stripe has issues, users get clear error messages.
 
-#### 10.2 Logging Strategy
-- **Application Logs:** Structured JSON logging
-- **Error Tracking:** Exception handling and logging
-- **Performance Metrics:** Response time monitoring
+---
 
-### 11. Testing Strategy
+## Docker Deployment
 
-#### 11.1 Backend Testing
-- **Unit Tests:** Service layer testing
-- **Integration Tests:** Repository testing
-- **Security Tests:** JWT validation testing
+We use multi-stage Docker builds to keep images small and secure:
 
-#### 11.2 Frontend Testing
-- **Component Tests:** React component testing
-- **Integration Tests:** API integration testing
-- **E2E Tests:** User workflow testing
+**Frontend Image** - Builds the React app and serves it with Nginx
+**Backend Image** - Packages the Spring Boot app with embedded Tomcat
 
-### 12. Scalability Considerations
+Docker Compose orchestrates everything:
+- Frontend and backend containers
+- Shared network for communication
+- Volume mounting for database persistence
+- Health checks to ensure everything's running
 
-#### 12.1 Horizontal Scaling
-- **Load Balancing:** Multiple frontend instances
-- **Database Scaling:** Read replicas for queries
-- **Caching Layer:** Redis for session management
+The whole stack starts with one command: `docker-compose up`
 
-#### 12.2 Performance Monitoring
-- **Metrics Collection:** Application performance metrics
-- **Alert System:** Automated monitoring alerts
-- **Capacity Planning:** Resource usage tracking
+---
+
+## Performance and Reliability
+
+**Frontend Performance**
+- Code splitting so pages load fast
+- React Query caching reduces API calls
+- Optimized bundle sizes with Vite
+- Responsive design that works on any device
+
+**Backend Performance**
+- Database connection pooling
+- Efficient JPA queries with proper indexing
+- Caching for frequently accessed data
+- Rate limiting to prevent abuse
+
+**Monitoring**
+- Health check endpoints for both services
+- Structured logging for debugging
+- Error tracking and alerting
+- Performance metrics collection
+
+---
+
+## Testing Strategy
+
+We test the things that matter most:
+
+**Backend Tests** - Service layer logic, repository operations, security features
+**Frontend Tests** - Component behavior, user interactions, API integration
+**Integration Tests** - End-to-end user workflows
+
+The test suite runs automatically on every code change, and we maintain high coverage on critical paths like trading and authentication.
+
+---
+
+## What We Learned
+
+**Keep It Simple** - We chose proven technologies over trendy ones
+**Security First** - Built security in from the start, not bolted on later
+**User Experience** - Every technical decision considered the user impact
+**Maintainability** - Code that's easy to understand and modify
+
+**Real-World Challenges We Solved**
+- Currency conversion accuracy (exchange rates change constantly)
+- Real-time price updates without overwhelming the API
+- Secure payment processing with clear user feedback
+- Portfolio calculations that handle partial sales correctly
+
+---
+
+## Future Technical Improvements
+
+**Short Term**
+- Redis caching layer for better performance
+- WebSocket connections for real-time price updates
+- Mobile app using React Native
+- Enhanced monitoring and alerting
+
+**Medium Term**
+- Microservices architecture for better scaling
+- Multiple database replicas for high availability
+- Advanced trading features like stop-loss orders
+- API rate limiting and usage analytics
+
+**Long Term**
+- Machine learning for trading insights
+- Blockchain integration for DeFi features
+- Multi-region deployment for global users
+- Advanced security features like 2FA
+
+---
+
+## Development Workflow
+
+**Local Development** - Docker Compose for consistent environments
+**Code Quality** - Automated linting, formatting, and testing
+**Deployment** - Container-based deployment with health checks
+**Monitoring** - Logs and metrics for troubleshooting
+
+**Team Practices**
+- Code reviews for all changes
+- Feature branches and pull requests
+- Automated testing before deployment
+- Documentation that stays up-to-date
+
+---
+

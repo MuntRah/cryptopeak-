@@ -188,8 +188,7 @@ npm run test
 
 - **[PRD.md](PRD.md)** - Product Requirements Document
 - **[TDD.md](TDD.md)** - Technical Design Document
-- **[Frontend Test Cases](frontEnd/FRONTEND_TEST_CASES.md)** - Frontend testing guide
-- **[Backend Test Cases](backEnd/BACKEND_TEST_CASES.md)** - Backend testing guide
+- **[TEST_CASES.md](TEST_CASES.md)** - Comprehensive Testing Guide
 
 ## 📝 License
 

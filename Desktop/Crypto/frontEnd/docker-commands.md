@@ -1,15 +1,15 @@
-# Docker Commands for CryptoPeak Frontend
+# Docker Commands for CryptoPeak
 
 ## Build and Run Commands
 
-### Build the Docker image
+### Build the Docker images
 ```bash
-docker build -t cryptopeak-frontend .
-```
+# Frontend image
+docker build -t cryptopeak-frontend:v1.0 .
 
-### Run the container
-```bash
-docker run -d -p 3000:80 --name cryptopeak-frontend cryptopeak-frontend
+# Backend image (from backEnd directory)
+cd ../backEnd
+docker build -t cryptopeak-backend:v1.0 .
 ```
 
 ### Using Docker Compose (Recommended)
@@ -24,7 +24,8 @@ docker-compose up -d
 docker-compose down
 
 # View logs
-docker-compose logs -f cryptopeak-frontend
+docker-compose logs -f cryptopeak        # Frontend logs
+docker-compose logs -f cryptopeak-api    # Backend logs
 
 # Rebuild specific service
 docker-compose build cryptopeak-frontend
@@ -50,24 +51,26 @@ npm run build
 docker ps
 ```
 
-### Stop container
+### Stop containers
 ```bash
-docker stop cryptopeak-frontend
+docker stop cryptopeak cryptopeak-api
 ```
 
-### Remove container
+### Remove containers
 ```bash
-docker rm cryptopeak-frontend
+docker rm cryptopeak cryptopeak-api
 ```
 
 ### View container logs
 ```bash
-docker logs cryptopeak-frontend
+docker logs cryptopeak        # Frontend logs
+docker logs cryptopeak-api    # Backend logs
 ```
 
 ### Execute commands in running container
 ```bash
-docker exec -it cryptopeak-frontend sh
+docker exec -it cryptopeak sh        # Frontend container
+docker exec -it cryptopeak-api sh    # Backend container
 ```
 
 ## Image Management
@@ -77,9 +80,10 @@ docker exec -it cryptopeak-frontend sh
 docker images
 ```
 
-### Remove image
+### Remove images
 ```bash
-docker rmi cryptopeak-frontend
+docker rmi cryptopeak-frontend:v1.0
+docker rmi cryptopeak-backend:v1.0
 ```
 
 ### Clean up unused images and containers
@@ -91,12 +95,14 @@ docker system prune -a
 
 ### Check container health
 ```bash
-docker inspect --format='{{.State.Health.Status}}' cryptopeak-frontend
+docker inspect --format='{{.State.Health.Status}}' cryptopeak
+docker inspect --format='{{.State.Health.Status}}' cryptopeak-api
 ```
 
-### Test health endpoint
+### Test health endpoints
 ```bash
-curl http://localhost:3000/health
+curl http://localhost:4567/health        # Frontend health
+curl http://localhost:9876/actuator/health  # Backend health
 ```
 
 ## Environment Variables
@@ -104,27 +110,37 @@ curl http://localhost:3000/health
 Set environment variables in docker-compose.yml or pass them during run:
 
 ```bash
-docker run -d -p 3000:80 \
+docker run -d -p 4567:80 \
   -e NODE_ENV=production \
-  --name cryptopeak-frontend \
-  cryptopeak-frontend
+  --name cryptopeak \
+  cryptopeak-frontend:v1.0
 ```
 
 ## Full Stack Deployment
 
 To run both frontend and backend together:
 
-1. Build backend image first (from backEnd directory):
+1. Build both images:
    ```bash
+   # Frontend
+   docker build -t cryptopeak-frontend:v1.0 .
+   
+   # Backend (from backEnd directory)
    cd ../backEnd
-   docker build -t cryptopeak-backend .
+   docker build -t cryptopeak-backend:v1.0 .
+   cd ../frontEnd
    ```
 
-2. Run full stack (from frontEnd directory):
+2. Run full stack:
    ```bash
-   docker-compose up -d --build
+   docker-compose up -d
    ```
 
 Access the application:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8080
+- **CryptoPeak App**: http://localhost:4567
+- **API Backend**: http://localhost:9876
+
+## Container Names
+- **cryptopeak** - Main application (frontend)
+- **cryptopeak-api** - Backend API server
+- **Images**: cryptopeak-frontend:v1.0, cryptopeak-backend:v1.0
