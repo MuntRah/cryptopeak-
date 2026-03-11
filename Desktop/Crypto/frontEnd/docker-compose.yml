@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: cryptopeak-frontend
     ports:
-      - "3000:80"
+      - "4567:80"
     environment:
       - NODE_ENV=production
     restart: unless-stopped
@@ -21,10 +21,10 @@ services:
       - cryptopeak-backend
 
   cryptopeak-backend:
-    image: cryptopeak-backend:latest
+    image: cryptopeak-backend:v1.0
     container_name: cryptopeak-backend
     ports:
-      - "8080:8080"
+      - "9876:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - DB_PATH=/app/data/cryptopeak.db

@@ -23,10 +23,13 @@ target/
 .vscode/
 .idea/
 *.iml
+*.iws
+*.ipr
 
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Logs
 *.log
@@ -41,6 +44,8 @@ docker-data/
 
 # Maven
 .mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
 
 # Spring Boot
 HELP.md
@@ -53,3 +58,19 @@ HELP.md
 *.zip
 *.tar.gz
 *.rar
+
+# Test coverage
+coverage/
+*.lcov
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache

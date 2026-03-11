@@ -1,142 +1,276 @@
-# Product Requirements Document (PRD)
+# Product Requirements Document
 ## CryptoPeak - Cryptocurrency Trading Platform
 
-### 1. Product Overview
-**Product Name:** CryptoPeak  
-**Version:** 1.0  
-**Date:** March 2026  
+**Project:** CryptoPeak  
 **Team:** Array Innovation  
+**Date:** March 2026  
+**Version:** 1.0  
 
-CryptoPeak is a comprehensive cryptocurrency trading platform that enables users to buy, sell, and manage digital assets with real-time market data, portfolio tracking, and advanced trading features.
+---
 
-### 2. Business Objectives
-- Provide a secure and user-friendly cryptocurrency trading experience
-- Enable real-time trading with live market data from Binance API
-- Support multiple currencies (USD, BHD, EUR, GBP, JPY)
-- Offer portfolio management and trading analytics
-- Implement limit orders for advanced trading strategies
+## What We're Building
 
-### 3. Target Users
-- **Primary:** Individual cryptocurrency traders and investors
-- **Secondary:** Students learning about cryptocurrency trading
-- **Tertiary:** Small businesses accepting cryptocurrency payments
+CryptoPeak is our take on making cryptocurrency trading accessible to everyone. We're building a web platform where people can buy, sell, and track their crypto investments without the complexity that scares away newcomers.
 
-### 4. Core Features
+The idea came from seeing how intimidating most crypto platforms are. We wanted something that feels familiar - like online banking - but with the power to trade digital assets in real-time.
 
-#### 4.1 User Management
-- **User Registration & Authentication**
-  - Email-based registration
-  - JWT token authentication
-  - Password reset functionality
-  - Profile management
+---
 
-#### 4.2 Trading Features
-- **Market Trading**
-  - Real-time cryptocurrency prices from Binance API
-  - Buy/Sell orders with instant execution
-  - Support for major cryptocurrencies (BTC, ETH, USDC, SOL, XRP)
-  
-- **Limit Orders**
-  - Set buy/sell orders at specific price points
-  - Automatic execution when market conditions are met
-  - Order management and cancellation
+## Why This Matters
 
-#### 4.3 Portfolio Management
-- **Holdings Tracking**
-  - Real-time portfolio value calculation
-  - Profit/Loss tracking per asset
-  - Average buy price calculation
-  - Transaction history
+### The Problem
+Most crypto trading platforms are either too complex for beginners or too basic for serious traders. People want:
+- Real prices, not delayed data
+- Simple buying and selling
+- Clear portfolio tracking
+- Support for their local currency
+- Security they can trust
 
-- **Analytics Dashboard**
-  - Portfolio performance charts
-  - Price history visualization
-  - Trading statistics and insights
+### Our Solution
+We're building CryptoPeak to bridge that gap. It's sophisticated enough for experienced traders but simple enough for your parents to use.
 
-#### 4.4 Payment Integration
-- **Deposit System**
-  - Stripe payment integration
-  - Multiple payment methods support
-  - Secure transaction processing
-  - Balance management
+### What Success Looks Like
+- Most visitors actually sign up instead of just browsing around
+- People spend meaningful time exploring the platform, not just bouncing off
+- Nearly all trades complete successfully without issues
+- Users keep coming back because they find real value
 
-#### 4.5 Multi-Currency Support
-- **Currency Conversion**
-  - USD, BHD, EUR, GBP, JPY support
-  - Real-time exchange rate conversion
-  - Localized pricing display
+---
 
-### 5. Technical Requirements
+## Who's Going to Use This
 
-#### 5.1 Performance
-- Page load time < 3 seconds
-- Real-time price updates every 30 seconds
-- Support for 1000+ concurrent users
-- 99.9% uptime availability
+### Main Users (Most Important)
+**Individual Traders** - People managing their own crypto investments
+- Typically young professionals and middle-aged adults
+- Mix of beginners and intermediate traders
+- Want easy-to-understand interfaces and reliable data
+- Need portfolio tracking to see how they're doing
 
-#### 5.2 Security
-- JWT-based authentication
-- HTTPS encryption for all communications
-- Secure API key management
-- Input validation and sanitization
+### Students and Learners
+**People New to Crypto** - Learning about digital assets
+- Mostly younger adults and students
+- Complete beginners who need guidance
+- Want a safe place to learn without losing money
+- Need educational features and clear explanations
 
-#### 5.3 Compatibility
-- Modern web browsers (Chrome, Firefox, Safari, Edge)
-- Responsive design for mobile and desktop
-- Docker containerization for deployment
+### Small Businesses
+**Companies Accepting Crypto** - Businesses exploring crypto payments
+- Small teams and startups
+- Some crypto experience
+- Need business-focused tools and reporting
+- Want multi-currency support for international customers
 
-### 6. User Stories
+---
 
-#### 6.1 As a New User
-- I want to register an account so I can start trading
-- I want to deposit funds so I can purchase cryptocurrencies
-- I want to see real-time prices so I can make informed decisions
+## What We're Building
 
-#### 6.2 As an Active Trader
-- I want to place limit orders so I can buy/sell at specific prices
-- I want to track my portfolio performance so I can analyze my investments
-- I want to view transaction history so I can monitor my trading activity
+### Getting Started (The Basics)
+**Account Setup**
+- Sign up with email (no complicated verification)
+- Secure login with modern security (JWT tokens)
+- Password reset that actually works
+- Profile management for preferences
 
-#### 6.3 As an International User
-- I want to see prices in my local currency so I can understand costs
-- I want to switch between currencies so I can trade in my preferred denomination
+**Adding Money**
+- Stripe integration for credit cards and bank transfers
+- Multiple payment options (people have preferences)
+- Clear balance tracking
+- Secure processing (no storing sensitive data)
 
-### 7. Success Metrics
-- User registration rate > 80% of visitors
-- Average session duration > 10 minutes
-- Portfolio value growth tracking
-- Transaction completion rate > 95%
-- User retention rate > 60% after 30 days
+### Trading Features (The Core)
+**Market Orders**
+- Buy and sell at current prices
+- Real-time data from Binance with frequent updates
+- Support for major coins: Bitcoin, Ethereum, USD Coin, Solana, Ripple
+- Instant execution confirmation
 
-### 8. Constraints & Assumptions
-- **Constraints:**
-  - Must comply with cryptocurrency trading regulations
-  - Limited to supported cryptocurrencies on Binance API
-  - Requires stable internet connection for real-time data
+**Limit Orders** (Advanced Feature)
+- Set buy/sell orders at specific prices
+- Automatic execution when market hits your price
+- Order management (view, modify, cancel)
+- Perfect for people who can't watch markets all day
 
-- **Assumptions:**
-  - Users have basic understanding of cryptocurrency trading
-  - Market data from Binance API remains accessible
-  - Payment processing through Stripe remains available
+### Portfolio Management (The Value)
+**Holdings Dashboard**
+- See all your crypto in one place
+- Real-time value calculations
+- Profit/loss tracking (the numbers people really care about)
+- Average buy price calculations
 
-### 9. Future Enhancements
-- Mobile application development
-- Advanced charting tools
-- Social trading features
-- Automated trading bots
-- Additional cryptocurrency exchanges integration
-- Staking and DeFi features
+**Transaction History**
+- Complete record of all trades
+- Easy-to-read format (not confusing tables)
+- Export capabilities for taxes
+- Search and filter options
 
-### 10. Risk Assessment
-- **High Risk:** Market volatility affecting user experience
-- **Medium Risk:** API rate limiting from external services
-- **Low Risk:** User interface usability issues
+**Performance Analytics**
+- Charts showing portfolio growth
+- Individual coin performance
+- Trading statistics and insights
+- Visual data that makes sense
 
-### 11. Acceptance Criteria
-- All core trading features functional
-- Real-time price updates working
-- User authentication secure and reliable
-- Payment processing successful
-- Portfolio tracking accurate
-- Multi-currency conversion working
-- Responsive design on all devices
+### Multi-Currency Support (Global Reach)
+We support 5 major currencies because crypto is global:
+- USD (United States Dollar)
+- BHD (Bahraini Dinar) - our local market
+- EUR (Euro)
+- GBP (British Pound)
+- JPY (Japanese Yen)
+
+Real-time conversion means people see prices in their familiar currency.
+
+---
+
+## Technical Stuff (What Makes It Work)
+
+### Performance Goals
+- Pages load in under 3 seconds (people won't wait longer)
+- Price updates every 30 seconds (fresh enough for trading decisions)
+- Handle 1000+ people using it simultaneously
+- 99.9% uptime (crypto markets never sleep)
+
+### Security (Non-Negotiable)
+- All communication encrypted (HTTPS everywhere)
+- Passwords properly hashed (BCrypt with salt)
+- JWT tokens expire in 24 hours
+- Input validation to prevent attacks
+- Regular security audits
+
+### Browser Support
+Works on modern browsers:
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+Responsive design means it works on phones, tablets, and desktops.
+
+---
+
+## User Experience Flow
+
+### New User Journey
+1. **Discovery** - Land on homepage, see clear value proposition
+2. **Registration** - Quick signup, email verification
+3. **First Deposit** - Add money with clear instructions
+4. **First Trade** - Guided experience for first purchase
+5. **Portfolio Review** - See their investment grow
+
+### Experienced Trader Journey
+1. **Quick Login** - Fast access to their dashboard
+2. **Market Analysis** - Check prices and charts
+3. **Order Placement** - Execute trades efficiently
+4. **Portfolio Management** - Track performance across holdings
+5. **Advanced Features** - Use limit orders and analytics
+
+### What Users Actually Say They Want
+- *"I want to buy Bitcoin without feeling like I need a computer science degree"*
+- *"Show me if I'm making or losing money - clearly"*
+- *"Let me set a buy order and forget about it until it executes"*
+- *"I want to see prices in my local currency, not just USD"*
+
+---
+
+## Business Model
+
+### How We Make Money
+**Trading Fees** - 0.1% per transaction
+- Competitive with industry standards
+- Transparent pricing (no hidden fees)
+- Volume discounts for active traders
+
+**Payment Processing** - Small spread on currency conversion
+**Premium Features** - Advanced analytics and higher limits (future)
+
+### What It Costs to Run
+- Cloud hosting and databases
+- Binance API fees for market data
+- Stripe fees for payment processing
+- Security audits and SSL certificates
+- Legal and compliance costs
+
+---
+
+## Risks and How We Handle Them
+
+### Big Risks
+**Market Volatility** - Crypto prices can swing wildly
+- Solution: Clear risk warnings, educational content
+- Real-time alerts for major price movements
+
+**API Dependencies** - We rely on Binance for price data
+- Solution: Backup data sources, robust error handling
+- Caching to reduce API calls
+
+**Security Threats** - We're handling money and personal data
+- Solution: Multi-layer security, regular audits
+- Insurance and compliance with regulations
+
+**Regulatory Changes** - Crypto laws are evolving
+- Solution: Legal monitoring, compliance-first approach
+- Flexible architecture to adapt to new requirements
+
+---
+
+## Development Timeline
+
+### What's Done (Phase 1)
+- ✅ User accounts and authentication
+- ✅ Basic trading (buy/sell)
+- ✅ Portfolio tracking
+- ✅ Payment integration
+- ✅ Multi-currency support
+- ✅ Responsive design
+
+### Next 3 Months (Phase 2)
+- Mobile app development
+- Advanced price charts
+- Push notifications for price alerts
+- Enhanced portfolio analytics
+- Social features (following other traders)
+
+### Next 6 Months (Phase 3)
+- Trading bots and automation
+- DeFi integration (staking, lending)
+- Additional cryptocurrency exchanges
+- API for third-party developers
+
+---
+
+## Definition of "Done"
+
+### Core Features Must Work
+- Anyone can create an account and start trading within 5 minutes
+- All trades execute successfully with clear confirmation
+- Portfolio shows accurate values and profit/loss
+- Payment deposits work reliably
+- Currency conversion is accurate
+- Works perfectly on mobile and desktop
+
+### Quality Standards
+- Load times under 3 seconds on average internet
+- No critical security vulnerabilities
+- Handles 1000+ concurrent users without issues
+- User testing shows 90%+ satisfaction
+- Passes accessibility standards
+
+---
+
+## Future Vision
+
+### Short Term (6 months)
+We want CryptoPeak to be the go-to platform for crypto beginners in our region. Mobile app launch will expand our reach significantly.
+
+### Medium Term (1 year)
+Expand to serve intermediate and advanced traders with professional-grade tools while keeping the beginner-friendly experience.
+
+### Long Term (2+ years)
+Become a comprehensive crypto financial platform - trading, investing, DeFi, and education all in one place.
+
+---
+
+**This document represents our current understanding and will evolve as we learn from users and market feedback.**
+
+**Questions or feedback?** Contact the Array Innovation team.
+
+**Last updated:** March 2026
